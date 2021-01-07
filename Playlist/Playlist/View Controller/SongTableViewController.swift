@@ -15,6 +15,7 @@ class SongTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         SongController.shared.loadFromPersistenceStore()
+        self.tableView.rowHeight = 100
     }
 
     @IBAction func addSongButtonTapped(_ sender: Any) {
