@@ -1,42 +1,36 @@
 //
-//  SongController.swift
+//  PlaylistController.swift
 //  Playlist
 //
-//  Created by Devin Flora on 1/11/21.
+//  Created by Devin Flora on 1/12/21.
 //
 
 import Foundation
 
-class SongController {
+class PlaylistController {
     
-    // Shared instance
-    static let shared = SongController()
+    // MARK: - Shared Instance
+    static let shared = PlaylistController()
     
-    //Source of Truth (S.O.T)
-    var songs: [Song] = []
-        
-    //CRUD Methods
+    // MARK: - Source of Truth
+    var playlists: [Playlist] = []
+    
+    // MARK: - CRUD Methods
     //Create
-    func createSong(title: String, artist: String) {
-        let song = Song(title: title, artist: artist)
-        songs.append(song)
+    func createPlaylistWith(title: String) {
+        let playlist = Playlist(title: title)
+        playlists.append(playlist)
         saveToPersistenceStore()
     }
-    
-    //Read - Not needed for a bit.
-    
-    // TODO: - Update
     
     //Delete
-    func deleteSong(songToDelete: Song) {
-        guard let index = songs.firstIndex(of: songToDelete) else { return }
-        songs.remove(at: index)
+    func deletePlaytest(playlistToDelete: Playlist) {
+        guard let index = playlists.firstIndex(of: playlistToDelete) else { return }
+        playlists.remove(at: index)
         saveToPersistenceStore()
     }
     
-    // MARK: - Persistance
-    
-    // fileURL
+    // MARK: - Persistence
     func fileURL() -> URL {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let fileURL = urls[0].appendingPathComponent("Playlist.json")
@@ -46,7 +40,7 @@ class SongController {
     //save
     func saveToPersistenceStore() {
         do {
-            let data = try JSONEncoder().encode(songs)
+            let data = try JSONEncoder().encode(playlists)
             try data.write(to: fileURL())
         } catch {
             print(error)
@@ -58,10 +52,10 @@ class SongController {
     func loadFromPersistenceStore() {
         do {
             let data = try Data(contentsOf: fileURL())
-            songs = try JSONDecoder().decode([Song].self, from: data)
+            playlists = try JSONDecoder().decode([Playlist].self, from: data)
         } catch {
             print(error)
             print(error.localizedDescription)
         }
     }
-}//End of Class
+}
